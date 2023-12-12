@@ -1,0 +1,59 @@
+version: '3'
+services:
+  webdb:
+    container_name: ci4db
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=S3cret
+      - MYSQL_DATABASE=myapps
+      - MYSQL_USER=dbUser
+      - MYSQL_PASSWORD=@myPass
+    volumes:
+      - cidb:/var/lib/mariadb:rw
+      - /var/docker/mysql/conf:/etc/mariadb
+    ports:
+      - '3306:3306'
+
+  php:
+    image: php:8-fpm
+    container_name: webphp
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /var/www/html
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - webdb
+
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./:/var/www/html
+      - ./nginx/conf.d/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 80:80
+    depends_on:
+      - php
+
+  # redis:
+  #   container_name: lajuredis
+  #   image: bitnami/redis:latest
+  #   environment:
+  #     - ALLOW_EMPTY_PASSWORD=yes
+  #   volumes:
+  #     - ciredis:/bitnami/redis/data:rw
+  #   ports:
+  #     - '6379:6379'
+
+volumes:
+  cidb:
+    driver: local
+  # redisdata:
+  #   driver: local

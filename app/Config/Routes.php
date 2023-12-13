@@ -22,6 +22,11 @@ $routes->group('admin', static function($routes) {
     $routes->get('dashboard', [DashboardController::class, 'index']);
     $routes->get('usergroups', [UsergroupsController::class,'index']);
     $routes->get('users', [UsersController::class, 'index']);
-    $routes->get('menus', [MenusController::class, 'index']);
+
+    $routes->group('menus', static function($routes){
+        $routes->get('', [MenusController::class, 'index']);
+        $routes->post('access', [MenusController::class, 'access']);
+    });
+
     $routes->get('settings', [SettingsController::class, 'index']);
 });

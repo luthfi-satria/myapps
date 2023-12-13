@@ -40,13 +40,21 @@ class AuthFilter implements FilterInterface
 
                 if(!empty($token)){
                     $decoded = JWT::decode($token, new Key($key, 'HS256'));
+                    foreach($decoded as $key => $val){
+                        if(in_array($key, ['iat','exp']) == false){
+                            define(strtoupper($key), $val);
+                        }
+                    }
                     return $decoded;
                 }
             }
             throw new \Exception('Access Denied');
         }catch(\Exception $err){
             $response = service('response');
-            $response->setBody($err->getMessage());
+            $response->setBody(json_encode([
+                'code' => 401,
+                'message' => $err->getMessage()
+            ]));
             $response->setStatusCode(401);
             return $response;
         }

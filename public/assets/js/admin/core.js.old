@@ -1,0 +1,56 @@
+let db;
+dbInit();
+function dbInit(){
+    if(!window.indexedDB){
+        console.log('Your Browser is not support indexedDB');
+        return;
+    }
+
+    const request = window.indexedDB.open('MYAPPS', 1);
+    request.addEventListener('error', () => console.error('ERROR OPENING DB'));
+    request.addEventListener('success', () => {
+        console.log('DB OPENED');
+        db = request.result;
+    });
+    request.addEventListener('upgradeneeded', (init) => {
+        db = init.target.result;
+        db.onerror = () => {
+            console.log('ERROR LOADING DB');
+        };
+        const table = db.createObjectStore('data', { keyPath: 'id', autoIncrement: true});
+
+        table.createIndex('title','title', {unique: false});
+        table.createIndex('body','body', {unique: false});
+    });
+}
+
+function addIndexes(data){
+    const transaction = db.transaction('data','readwrite');
+    const objectStore = transaction.objectStore('data');
+    const query = objectStore.add(data);
+
+    return query;
+}
+
+function readIndexes(key){
+    const transaction = db.transaction('data', 'readonly');
+    const objectStore = transaction.objectStore('data');
+    const index = objectStore.index('title');
+    return index.get(key);
+}
+
+async function verifyToken(){
+    return new Promise(function(resolve, reject) {
+        const token = readIndexes('TOKEN');
+    
+        token.onsuccess = () => {
+            resolve(token.result.body);
+        };
+    
+        token.onerror = (event) => {
+            console.log(event.target.errorCode);
+            reject(event.target.errorCode);
+            window.location = baseUrl+'/auth/login';
+        }
+    });
+}

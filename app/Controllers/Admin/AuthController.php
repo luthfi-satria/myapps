@@ -59,4 +59,5 @@ class AuthController extends BaseController{
             exit ($error->getMessage());
         }
     }
+
 }

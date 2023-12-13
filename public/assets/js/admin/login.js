@@ -12,12 +12,14 @@ function LoginAccount(){
         dataType: "json",
     }).done((response) => {
         if(response.success == true){
-            addIndexes({
-                title: 'TOKEN',
-                body: response.token,
-            }).addEventListener('success', () => {
-                window.location = response.url;
-            });
+            sessionStorage.setItem('TOKEN', response.token);
+            window.location = response.url;
+            // addIndexes({
+            //     title: 'TOKEN',
+            //     body: response.token,
+            // }).addEventListener('success', () => {
+            //     window.location = response.url;
+            // });
         }
         else{
             console.log(response);

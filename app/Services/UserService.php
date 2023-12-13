@@ -2,16 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\UserModel;
 use Exception;
 
-class UserService {
-    var $db;
-    function __construct()
-    {
-        $this->db = \Config\Database::connect();
-    }
-
+class UserService extends CoreService{
     function GetUserByEmail($email){
         try{
             $user = $this->db->table('users')

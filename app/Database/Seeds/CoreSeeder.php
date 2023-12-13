@@ -13,5 +13,6 @@ class CoreSeeder extends Seeder
         $this->call('UserroleSeeder');
         $this->call('UserSeeder');
         $this->call('MenuSeeder');
+        $this->call('MenusModuleSeeder');
     }
 }

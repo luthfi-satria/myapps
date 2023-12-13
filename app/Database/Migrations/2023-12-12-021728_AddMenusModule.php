@@ -11,7 +11,7 @@ class AddMenusModule extends Migration
     {
         $this->forge->addField([
             'id' => [
-                'type' => 'VARCHAR',
+                'type' => 'INT',
                 'constraint' => 11,
                 'auto_increment' => true,
             ],

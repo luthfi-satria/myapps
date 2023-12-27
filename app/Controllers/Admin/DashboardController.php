@@ -2,23 +2,10 @@
 
 namespace App\Controllers\Admin;
 
-use App\Controllers\BaseController;
-use CodeIgniter\API\ResponseTrait;
-
-
-class DashboardController extends BaseController
-{
-    use ResponseTrait;
-
-    function __construct()
-    {
-        
-    }
-    
+class DashboardController extends AdminController
+{    
     public function index()
     {
-        return View('admin/modules/dashboard/main', [
-            'cache' => true
-        ]);
+        return $this->webview('admin/modules/dashboard/main');
     }
 }

@@ -52,3 +52,7 @@
     </div>
 </div>
 <?= $this->endSection(); ?>
+
+<?= $this->section('javascript'); ?>
+    <script type="text/javascript" src="<?php echo base_url('assets/js/admin/login.js');?>"></script>
+<?= $this->endSection(); ?>

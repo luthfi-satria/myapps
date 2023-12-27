@@ -7,7 +7,6 @@ class MenusController extends AdminController{
     var $accessService;
 
     function __construct(){
-        parent::__construct();
         $this->accessService = new AccessService;
     }
 
@@ -22,7 +21,7 @@ class MenusController extends AdminController{
 
     function access(){
         try{
-            $menus = $this->accessService->getAccessUsersByRole($this->user->role_id);
+            $menus = $this->accessService->getAccessUsersByRole($this->request->JWTUsers->role_id);
             $response = [
                 "code" => 200,
                 "message" => "menus Access",

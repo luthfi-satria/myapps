@@ -30,7 +30,14 @@ class JwtAuthenticate{
             }
         }catch(\Exception $err){
             log_message('info', $err->getMessage());
-            throw $err;
+            $response = service('response');
+            $response->setContentType('application/json');
+            $response->setBody(json_encode([
+                'code' => 401,
+                'message' => $err->getMessage()
+            ]));
+            $response->setStatusCode(401);
+            return $response;
         }
     }
 }

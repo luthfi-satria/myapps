@@ -2,14 +2,12 @@
 
 namespace App\Controllers\Admin;
 
-use App\Controllers\BaseController;
-use CodeIgniter\API\ResponseTrait;
 use \App\Models\validation\Authentication;
+use App\Services\AuthService;
 use App\Services\UserService;
 use Exception;
 
-class AuthController extends BaseController{
-    use ResponseTrait;
+class AuthController extends AdminController{
     var $userService;
     function __construct()
     {
@@ -17,12 +15,7 @@ class AuthController extends BaseController{
     }
 
     function index(){
-        return View('admin/modules/login/login_form', [
-            'jsfile' => [
-                'assets/js/admin/login.js',
-            ],
-            'cache' => true
-        ]);          
+        return $this->webview('admin/modules/login/login_form');
     }
 
     function login(){
@@ -60,4 +53,21 @@ class AuthController extends BaseController{
         }
     }
 
+    function verify_token(){
+        if($this->request->hasHeader('Authorization')){
+            $header = $this->request->header('Authorization');
+            $verify = AuthService::VerifyToken($header);
+            if(!empty($verify)){
+                return $this->respondCreated([
+                    'code' => 200,
+                    'message' => 'Token is valid',
+                    'data' => [
+                        'fname' => $verify->fname,
+                        'lname' => $verify->lname,
+                    ],
+                ], 'token is valid');
+            }
+        }
+        return $this->failUnauthorized();
+    }
 }

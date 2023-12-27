@@ -1,14 +1,16 @@
 <?php
     $profileMenu = [
         [
-            'href' => '#',
+            'href' => 'admin/user/profile',
+            'id'    => 'profile_setting',
             'name' => 'Setting',
             'icon' => 'fa fa-cogs',
         ],
         [
-            'href' => '#',
+            'href' => null,
+            'id'    => 'profile_signout',
             'name' => 'Sign Out',
-            'icon' => 'fa fa-sign-out'
+            'icon' => 'fa fa-sign-out',
         ],
     ];
 ?>
@@ -67,15 +69,20 @@
                     </div>
                     <div 
                         id="myProfile"
-                        class="absolute hidden text-xs right-0 z-10 mt-2 w-48 origin-top-right rounded-mdpy-1 shadow-lg shadow-gray-500 ring-1 ring-gray-500 ring-opacity-5 focus:outline-none">
+                        class="absolute hidden text-sm right-0 z-10 mt-2 w-48 origin-top-right rounded-mdpy-1 shadow-lg shadow-gray-500 ring-1 ring-gray-500 ring-opacity-5 focus:outline-none">
+                        <ul>
                         <?php
                             foreach($profileMenu as $key => $value){
-                                echo '<a href="'.$value['href'].'" class="block uppercase px-4 py-2 tracking-widest hover:bg-gray-100">';
-                                    echo '<i class="'.$value['icon'].' mr-2"></i>';
-                                    echo $value['name'];
-                                echo '</a>';
+                                $href = !empty($value['href']) ? ' href="'.$value['href'].'"' : '';
+                                echo '<li class="mb-2">';
+                                    echo '<a id="'.$value['id'].'"'.$href.' class="block uppercase px-4 py-2 tracking-widest hover:bg-gray-100 cursor-pointer">';
+                                        echo '<i class="'.$value['icon'].' mr-2"></i>';
+                                        echo $value['name'];
+                                    echo '</a>';
+                                echo '</li>';
                             }
                         ?>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -85,15 +92,15 @@
         <div id="mob_menu" class="hidden lg:hidden">
             <div class="space-y-1 px-2 pb-3 pt-2">
                 <ul class="border-t-2 border-white">
-                    <li class='mt-2 flex items-center px-4 duration-300 cursor-pointer hover:bg-gray-200'>
+                    <li class='mt-1 flex items-center px-4 duration-300 cursor-pointer hover:bg-gray-200'>
                         <a
-                            href=""
-                            class='flex w-full py-2 items-center text-xs'
+                            href="<?php echo base_url('admin/dashboard');?>"
+                            class='flex w-full py-2 items-center'
                             title='dashboard'
                         >
-                            <i class="fa fa-home text-center w-5 text-sm opacity-75"></i>
+                            <i class="fa fa-home text-center w-5 opacity-75"></i>
                             <span
-                                class='text-[15px] ml-2 overflow-hidden text-ellipsis whitespace-nowrap'
+                                class='ml-2 overflow-hidden text-ellipsis whitespace-nowrap capitalize'
                             >
                                 Dashboard
                             </span>

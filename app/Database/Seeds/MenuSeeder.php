@@ -21,7 +21,7 @@ class MenuSeeder extends Seeder
                 'label' => 'settings',
                 'route_url' => 'settings',
                 'sequence' => 1,
-                'icon' => 'fa fa-cogs',
+                'icon' => 'cogs',
                 'is_active' => 1,
             ],
             [
@@ -31,7 +31,7 @@ class MenuSeeder extends Seeder
                 'label' => 'configuration',
                 'route_url' => 'configuration',
                 'sequence' => 1,
-                'icon' => 'fa fa-wrench',
+                'icon' => 'wrench',
                 'is_active' => 1,
             ],
             [
@@ -41,7 +41,7 @@ class MenuSeeder extends Seeder
                 'label' => 'usergroup',
                 'route_url' => 'usergroup',
                 'sequence' => 2,
-                'icon' => 'fa fa-users',
+                'icon' => 'users',
                 'is_active' => 1,
             ],
             [
@@ -51,7 +51,7 @@ class MenuSeeder extends Seeder
                 'label' => 'usergroup roles',
                 'route_url' => 'roles',
                 'sequence' => 3,
-                'icon' => 'fa fa-sync-alt',
+                'icon' => 'sync-alt',
                 'is_active' => 1,
             ],
             [
@@ -61,7 +61,7 @@ class MenuSeeder extends Seeder
                 'label' => 'users',
                 'route_url' => 'users',
                 'sequence' => 2,
-                'icon' => 'fa fa-users',
+                'icon' => 'users',
                 'is_active' => 1,
             ],
         ];

@@ -5,40 +5,26 @@ if(!AuthToken) {
 
 const UrlMap = {
     LOGIN: baseUrl+'auth/login',
-    REFRESH_TOKEN: baseUrl+'auth/refresh_token',
+    VALIDATE_TOKEN: baseUrl+'auth/token/validate',
     MENU_ACCESS: baseUrl+'admin/menus/access',
+    SETTINGS: baseUrl+'admin/configuration',
+    USERGROUP: baseUrl+'admin/usergroup',
+    USER: baseUrl+'admin/user'
 }
 
 $(document).ready(function () {
-    loadMenus();
-    $('.nav-btn').on('focus', function(){
-        $(this).parent('div').next('div').removeClass('hidden');
-    }).on('focusout', function(){
-        $(this).parent('div').next('div').addClass('hidden');
-    });    
+    validate_token();
 });
 
-// REFRESH TOKEN
-function refresh_token(){
-    $.ajax({
-        type: "POST",
-        url: UrlMap.REFRESH_TOKEN,
-        headers: RequestHeader,
-        dataType: "json",
-        success: function (response) {
-            console.log(response);
-        }
-    });
-}
-
-// LOAD MENUS
-function loadMenus(){
+// VALIDATE TOKEN
+function validate_token(){
     HttpRequest({
         type: 'POST',
-        url: UrlMap.MENU_ACCESS,
-    },'#menu_loader').done((result) => {
-        console.log(result);
-    });
+        url: UrlMap.VALIDATE_TOKEN
+    }).done((result) => {
+        const user = `${result?.data?.fname} ${result?.data?.lname}` || 'user';
+        $('#welcome_user').text(user);
+    })
 }
 
 function HttpRequest(config, loaderId = null){
@@ -47,11 +33,13 @@ function HttpRequest(config, loaderId = null){
         type: 'GET',
         url: baseUrl,
         dataType: 'json',
+        contentType: 'application/json',
         beforeSend: () => {
             $(Loader).removeClass('hidden');
         },
         headers: {
             Authorization: `Bearer ${AuthToken}`,
+            'X-Requested-With' : 'XMLHttpRequest',
         },
         ...config
     };
@@ -62,7 +50,6 @@ function HttpRequest(config, loaderId = null){
                 sessionStorage.removeItem('TOKEN');
                 window.location = UrlMap.LOGIN;
             }
-            console.log(response.status);
         })
         .always(() => {
             setTimeout(() => {
@@ -71,3 +58,8 @@ function HttpRequest(config, loaderId = null){
         });
 }
 
+function SignOut(){
+    sessionStorage.removeItem('TOKEN');
+    sessionStorage.removeItem('MENUS');
+    window.location = UrlMap.LOGIN;
+}

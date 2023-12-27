@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class AuthService{
     static function JWTPayload($user){
@@ -16,7 +17,9 @@ class AuthService{
                 'exp' => $exp,
                 'email' => $user['email'],
                 'phone' => $user['phone'],
-                'role_id' => $user['role_id'], 
+                'role_id' => $user['role_id'],
+                'fname' => $user['first_name'],
+                'lname' => $user['last_name'],
             ];
 
             $token = JWT::encode($payload, $key, 'HS256');
@@ -29,6 +32,27 @@ class AuthService{
         }
     }
     
+    static function VerifyToken($authorization){
+        try{
+            $token = null;
+            if(!empty($authorization)){
+                if(preg_match('/Bearer\s(\S+)/', $authorization, $matches)){
+                    $token = $matches[1];
+                }
+            }
+    
+            if(!empty($token)){
+                $key = getenv('JWT_SECRET');
+                $decoded = JWT::decode($token, new Key($key, 'HS256'));
+                return $decoded;
+            }
+            return null;
+        }
+        catch(\Exception $err){
+            return null;
+        }
+    }
+
     static function UpdateUserResetToken($refresh, $user){
         $db = \Config\Database::connect();
         return $db->table('users')

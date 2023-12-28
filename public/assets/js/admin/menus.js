@@ -1,3 +1,5 @@
+const currentLocation = document.location.pathname;
+const locArray = currentLocation.split('/');
 $(document).ready(function () {
     loadMenus();
     $('.nav-btn').on('click', function(e){
@@ -37,6 +39,8 @@ function buildMenus(){
         const StructArray = JSON.parse(MenuStruct);
         const menus = MenusTrees(StructArray);
         $('#mob_menu ul, .sidebar').append(menus.join(''));
+        $('#mob_menu ul, .sidebar').find('li.active').parents('ul').removeClass('hidden');
+        $('#mob_menu ul li.active, .sidebar ul li.active').parent().prev('li').find('span i.fa').toggleClass('fa-chevron-right fa-chevron-down');
     }
 
     $('a.parent-menu').on('click', function(){
@@ -52,8 +56,9 @@ function MenusTrees(StructArray, parent_id=null, level=0){
         if(items?.parent_id == parent_id){
             const children = MenusTrees(StructArray, items?.id);
             const href = children.length == 0 ? `href="${baseUrl}admin/${items?.route_url}"` : '';
+            const isActive = locArray.includes(items?.route_url) ? 'active bg-gray-300' : '';
             const isParent = children.length > 0 ? 'parent-menu' : '';
-            let element = '<li class="mt-1 flex items-center px-4 duration-300 cursor-pointer hover:bg-gray-200">';
+            let element = `<li class="mt-1 flex items-center px-4 duration-300 cursor-pointer hover:bg-gray-200 ${isActive}">`;
                 element += `<a ${href} class="flex w-full py-2 items-center ${isParent}">`;
                     element += items?.icon ? '<i class="fa fa-'+items?.icon+' text-center w-5 opacity-75"></i>' : '';
                     element += '<span class="ml-2 overflow-hidden text-ellipsis whitespace-nowrap capitalize">';

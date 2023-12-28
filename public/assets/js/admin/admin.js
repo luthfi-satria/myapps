@@ -63,3 +63,16 @@ function SignOut(){
     sessionStorage.removeItem('MENUS');
     window.location = UrlMap.LOGIN;
 }
+
+function ShowAlert(init = {}){
+    const config = {
+        title: 'Info',
+        text: 'Be carefull',
+        icon: 'info',
+        showCloseButton: true,
+        showCancelButton: true,
+        cancelButtonText: `<i class="fa fa-close"></i> Cancel`,
+        ...init
+    };
+    return Swal.fire(config);
+}

@@ -23,12 +23,18 @@
 <script>
     const rowAction = (cell, formatterParam) => {
         const data = cell.getRow().getData();
-        const option = {
+        const editBtn = {
             class: 'border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white',
             type: 'button',
             onclick: `HandleEdit('${data.id}')`
         };
-        return addButton(option, 'Edit', 'fa-edit');
+        let html = addButton(editBtn, 'Edit', 'fa-edit');
+        html += addButton({
+            class: 'ml-2 border border-red-500 rounded-md hover:bg-red-500 hover:text-white',
+            type: 'button',
+            onclick: `HandleDelete('${data.id}','${data.name}')`
+        }, 'Delete','fa-trash');
+        return html;
     }
 
     const config = {
@@ -115,8 +121,20 @@
         });
     }
 
-    function HandleDelete(){
-
+    function HandleDelete(id, title){
+        ShowAlert({
+            text: `Are you sure deleted ${title}?`
+        }).then((result) => {
+            if(result.isConfirmed){
+                HttpRequest({
+                    type: 'delete',
+                    url: UrlMap.USERGROUP+'/'+id
+                }).done((result) => {
+                    console.log(result);
+                    table.replaceData();
+                })
+            }
+        })
     }
 </script>
 <?= $this->endSection('table_function');?>

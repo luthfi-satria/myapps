@@ -33,8 +33,9 @@ class UsergroupService extends CoreService{
                     ->update();
     }
 
-    function delete(){
-
+    function delete($id){
+        $usrDB = SELF::listQuery();
+        return $usrDB->where('id', $id)->delete();
     }
 
     function listQuery(){

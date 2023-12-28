@@ -38,6 +38,7 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section('javascript') ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="<?php echo base_url('assets/js/admin/admin.js');?>"></script>
     <script type="text/javascript" src="<?php echo base_url('assets/js/admin/menus.js');?>"></script>
     <?= $this->renderSection('js_addon'); ?>

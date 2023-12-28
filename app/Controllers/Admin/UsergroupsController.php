@@ -72,10 +72,10 @@ class UsergroupsController extends AdminController{
         }
     }
 
-    function delete(){
-
+    function delete($id){
         try{
-            
+            $delete = $this->usergroupService->delete($id);
+            return $this->responseSuccess('delete success', ['data' => $delete]);
         }catch(\Exception $err){
             return $this->fail($err->getMessage());
         }

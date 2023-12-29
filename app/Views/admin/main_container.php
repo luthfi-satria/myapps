@@ -5,7 +5,7 @@
     <div class="relative">
         <?= $this->include('admin/components/dashboard/navbar'); ?>
         <div class="content-wrapper relative lg:pt-24 pl-2 pb-32 pt-12 min-h-[689px]">
-            <div class="lg:ml-64 sm:ml-2 pl-10 pr-10">
+            <div class="lg:ml-56 sm:ml-2 pl-10 pr-10">
                 <?= $this->include('admin/components/dashboard/breadcrumbs');?>
                 <?= $this->renderSection('main_container');?>
             </div>

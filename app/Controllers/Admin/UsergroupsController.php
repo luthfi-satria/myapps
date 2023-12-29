@@ -48,7 +48,7 @@ class UsergroupsController extends AdminController{
                 );
             }
             $update = $this->usergroupService->create((array) $input);
-            return $this->responseSuccess('update success', ['data' => $update]);            
+            return $this->responseSuccess('data added', ['data' => $update]);            
         }catch(\Exception $err){
             return $this->fail($err->getMessage());
         }

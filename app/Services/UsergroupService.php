@@ -5,13 +5,17 @@ class UsergroupService extends CoreService{
     function list($request){
         $page = $request->getGet('page') ?? 1;
         $size = $request->getGet('size') ?? 100;
+        $name = $request->getGet('name') ?? '';
         $offset = ($page - 1) * $size;
+        $usrDB = SELF::listQuery();
+        if(!empty($name)){
+            $usrDB->like('name', $name);
+        }
         return [
-            'data' => SELF::listQuery()
-                        ->limit($size, $offset)
-                        ->get()
-                        ->getResultObject(),
-            'last_page' => ceil(SELF::listQuery()->countAllResults() / $size),            
+            'data' => $usrDB->limit($size, $offset)
+                            ->get()
+                            ->getResultObject(),
+            'last_page' => ceil($usrDB->countAllResults() / $size),            
         ];
     }
 

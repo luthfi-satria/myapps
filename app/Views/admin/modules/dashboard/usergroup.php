@@ -1,18 +1,29 @@
+<?php
+    helper('CustomForm');
+?>
 <?= $this->extend('admin/components/dashboard/table');?>
 <!-- CONTAINER -->
 <?= $this->section('page-container'); ?>
-    <div class="relative w-full text-right mb-5">
-        <button 
-            type="button" 
-            class="bg-blue-500 rounded-md text-white px-4 py-2 font-bold border border-blue-700 hover:bg-blue-600"
-            onclick="HandleCreate()"    
-        >
-            <i class="fa fa-plus"></i>
-            Add
-        </button>
+    <div class="relative w-full text-right mb-5 bg-white rounded-md p-2">
+        <?= gradientBlueButton([
+            'type' => 'button',
+            'onclick' => 'HandleCreate()',
+        ], 'Add', 'fa-plus');?>
+
     </div>
+    <form class="tableFilter relative flex flex-row gap-1 bg-white p-2 w-full mb-4 rounded-md items-start justify-between">
+        <div class="w-3/4 grid md:grid-cols-4 gap-1">
+            <?= inputText(['name' => 'name','placeholder' => 'Find name...','autocomplete' => 'off'])?>
+        </div>
+        <div class="">
+            <?= clearButton([
+                'type' => 'button',
+                'onclick' => 'HandleClear()',
+            ], 'Clear', 'fa-eraser');?>
+        </div>
+    </form>
     <div class="relative w-full">
-        <div class="dataTable"></div>
+        <div class="dataTable rounded-md p-2"></div>
     </div>
 <?= $this->endSection(); ?>
 
@@ -37,6 +48,8 @@
         return html;
     }
 
+    $('.tableFilter').on('submit', HandleFind);
+    
     const config = {
         ajaxURL: UrlMap.USERGROUP+'/list',
         columns: [
@@ -60,7 +73,26 @@
         ]
     };
 
-    const table = createTable('.dataTable', config);
+    let table = createTable('.dataTable', config);
+
+    function HandleFind(e){
+        e.preventDefault();
+        const findData = $('.tableFilter :input').serializeArray();
+        const params = {};
+        for(const items of findData){
+            params[items.name] = items.value;
+        }
+        const newConfig = {
+            ...config,
+            ajaxParams: params
+        }
+        table = createTable('.dataTable', newConfig);
+    }
+
+    function HandleClear(){
+        $('.tableFilter')[0].reset();
+        createTable('.dataTable', config);
+    }
 
     function HandleCreate(){
         const prop = Usergroup();
